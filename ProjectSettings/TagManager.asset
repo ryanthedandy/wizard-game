@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Projectile
   - Shield
+  - Spawn 4
   layers:
   - Default
   - TransparentFX

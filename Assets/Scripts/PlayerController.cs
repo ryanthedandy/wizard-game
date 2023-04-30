@@ -7,17 +7,19 @@ public class PlayerController : MonoBehaviour
 {
 
     public float playerSpeed = 5;
-    public float knockBack = 500;
-    
+    public bool isStunned = false;
+
+
     private Vector2 movementInput;
-    private Rigidbody playerRb;
+    
+    
 
  
 
     // Start is called before the first frame update
     void Awake()
     {
-        playerRb = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
@@ -25,7 +27,10 @@ public class PlayerController : MonoBehaviour
     {
 
         // move player if axis information responds
-        transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
+        if (!isStunned)
+        {
+            transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
+        }
 
     }
 
@@ -34,13 +39,9 @@ public class PlayerController : MonoBehaviour
         movementInput = ctx.ReadValue<Vector2>();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Projectile"))
-        {
-            playerRb.AddForce(other.gameObject.transform.forward * knockBack, ForceMode.Impulse);
-        }
-    }
+    
+
+
 
 
 

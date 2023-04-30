@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class LightningAction : MonoBehaviour
 {
-    public Transform firePoint;
+    
 
     public Rigidbody lightningPrefab;
+
+    public Transform lightningPoint;
+
 
     Controls controls;
 
     private bool canShoot = true;
     //private float launchForce = 10;
 
-    Quaternion lightningRotation = new Quaternion(-90, 0, 0, 0);
+    
 
 
 
@@ -36,8 +39,8 @@ public class LightningAction : MonoBehaviour
         {
             var projectileInstance = Instantiate(
                 lightningPrefab,
-                firePoint.position,
-                lightningRotation);
+                lightningPoint.position,
+                lightningPoint.rotation);
 
             //projectileInstance.AddForce(firePoint.forward * launchForce, ForceMode.Impulse);
 

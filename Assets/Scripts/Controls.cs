@@ -80,6 +80,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleport"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce9a1f14-8a2d-49dc-b6da-9a4e2f36e580"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Lightning"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85a07000-787d-4f6c-a65d-0e59a35fdf8c"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +182,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Rotate = m_Gameplay.FindAction("Rotate", throwIfNotFound: true);
         m_Gameplay_Shield = m_Gameplay.FindAction("Shield", throwIfNotFound: true);
         m_Gameplay_Lightning = m_Gameplay.FindAction("Lightning", throwIfNotFound: true);
+        m_Gameplay_Teleport = m_Gameplay.FindAction("Teleport", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Rotate;
     private readonly InputAction m_Gameplay_Shield;
     private readonly InputAction m_Gameplay_Lightning;
+    private readonly InputAction m_Gameplay_Teleport;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -239,6 +261,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Rotate => m_Wrapper.m_Gameplay_Rotate;
         public InputAction @Shield => m_Wrapper.m_Gameplay_Shield;
         public InputAction @Lightning => m_Wrapper.m_Gameplay_Lightning;
+        public InputAction @Teleport => m_Wrapper.m_Gameplay_Teleport;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +289,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Lightning.started += instance.OnLightning;
             @Lightning.performed += instance.OnLightning;
             @Lightning.canceled += instance.OnLightning;
+            @Teleport.started += instance.OnTeleport;
+            @Teleport.performed += instance.OnTeleport;
+            @Teleport.canceled += instance.OnTeleport;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -288,6 +314,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Lightning.started -= instance.OnLightning;
             @Lightning.performed -= instance.OnLightning;
             @Lightning.canceled -= instance.OnLightning;
+            @Teleport.started -= instance.OnTeleport;
+            @Teleport.performed -= instance.OnTeleport;
+            @Teleport.canceled -= instance.OnTeleport;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -313,5 +342,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRotate(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
         void OnLightning(InputAction.CallbackContext context);
+        void OnTeleport(InputAction.CallbackContext context);
     }
 }

@@ -8,12 +8,14 @@ public class FiringRotation : MonoBehaviour
 {
     private Vector2 rotate;
     Controls controls;
+    Rigidbody playerRb;
+
     void Awake()
     {
+        playerRb = GetComponent<Rigidbody>();
         controls = new Controls();
 
         controls.Gameplay.Rotate.performed += ctx => ctx.ReadValue<Vector2>();
-        controls.Gameplay.Rotate.canceled += ctx => rotate = Vector2.zero;
 
     }
 
@@ -43,6 +45,8 @@ public class FiringRotation : MonoBehaviour
     {
         rotate = ctx.ReadValue<Vector2>();
     }
+
+    
 
 
 
