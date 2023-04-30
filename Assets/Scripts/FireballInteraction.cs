@@ -25,7 +25,7 @@ public class FireballInteraction : MonoBehaviour
         {
             
             Rigidbody projectileRb = other.gameObject.GetComponent<Rigidbody>();
-            projectileRb.AddForce(-other.transform.forward * knockBack, ForceMode.Impulse);
+            projectileRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
             Destroy(gameObject);
         }
     }
