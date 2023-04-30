@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LightningInteraction : MonoBehaviour
 {
-    PlayerController playerScript;
+
+    public List<PlayerController> playerScripts = new List<PlayerController>();
     void Awake()
     {
-        playerScript = GameObject.Find("Player(Clone)").GetComponent<PlayerController>();
-        StartCoroutine(destroyLightning());
+        
     }
 
     // Update is called once per frame
@@ -21,28 +21,29 @@ public class LightningInteraction : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            
-            StartCoroutine(lightningCoolDown());
-            
+            Debug.Log("It hits");
+            playerScripts.Add(other.gameObject.GetComponent<PlayerController>());
+            foreach(PlayerController script in playerScripts)
+            {
+                script.isStunned = true;
+            }
+            StartCoroutine(destroyLightning());
+
         }
     }
 
-    public IEnumerator lightningCoolDown()
-    {
-        playerScript.isStunned = true;
-        yield return new WaitForSeconds(2);
-        playerScript.isStunned = false;
-        
-        
-
-    }
 
     public IEnumerator destroyLightning()
     {
         yield return new WaitForSeconds(2);
-        playerScript.isStunned = false;
+        foreach (PlayerController script in playerScripts)
+        {
+            script.isStunned = false;
+        }
         Destroy(gameObject);
     }
+
+    
 
 
 
