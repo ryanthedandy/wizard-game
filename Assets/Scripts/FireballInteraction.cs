@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireballInteraction : MonoBehaviour
 {
     public float knockBack = 50;
+    public bool isRebounding = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +26,21 @@ public class FireballInteraction : MonoBehaviour
         {
             
             Rigidbody projectileRb = other.gameObject.GetComponent<Rigidbody>();
-            projectileRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
-            Destroy(gameObject);
+
+            if (!isRebounding)
+            {
+                projectileRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
+            }
+            else
+            {
+                projectileRb.AddForce(-transform.forward * knockBack, ForceMode.Impulse);
+            }
+
+        }
+
+        if (other.gameObject.tag == "Shield")
+        {
+            isRebounding = true;
         }
     }
 

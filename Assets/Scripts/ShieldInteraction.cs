@@ -20,7 +20,7 @@ public class ShieldInteraction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Projectile"))
         {
-            Destroy(other.gameObject);
+            
             Rigidbody projectileRb = other.gameObject.GetComponent<Rigidbody>();
             projectileRb.AddForce(-other.transform.forward * rebound, ForceMode.Impulse);
         }
