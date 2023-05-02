@@ -10,6 +10,7 @@ public class TeleportAction : MonoBehaviour
     bool canTele = true;
     bool held = false;
     public float teleDistance = 0;
+    public ParticleSystem teleportParticle;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +36,7 @@ public class TeleportAction : MonoBehaviour
     {
         if (canTele)
         {
-            
+            teleportParticle.gameObject.SetActive(true);
             transform.position += transform.forward * teleDistance;
             teleDistance = 0;
             StartCoroutine(Cooldown());
@@ -47,6 +48,7 @@ public class TeleportAction : MonoBehaviour
         
         canTele = false;
         yield return new WaitForSeconds(1);
+        teleportParticle.gameObject.SetActive(false);
         canTele = true;
         
         
@@ -58,6 +60,7 @@ public class TeleportAction : MonoBehaviour
         {
             if (ctx.performed)
                 held = true;
+            
             if (ctx.canceled)
             {
                 held = false;

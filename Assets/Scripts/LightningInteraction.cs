@@ -8,7 +8,7 @@ public class LightningInteraction : MonoBehaviour
     public List<PlayerController> playerScripts = new List<PlayerController>();
     void Awake()
     {
-        
+        StartCoroutine(destroyLightning());
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class LightningInteraction : MonoBehaviour
             {
                 script.isStunned = true;
             }
-            StartCoroutine(destroyLightning());
+            
 
         }
     }

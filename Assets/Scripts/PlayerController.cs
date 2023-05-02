@@ -12,9 +12,16 @@ public class PlayerController : MonoBehaviour
     public float fallingThreshold = -2f;
     public float gravityForce = 1.5f;
 
+    //animation bools
+    public Animator animator;
+    public float walkingThreshold = .1f;
+
+
 
     private Vector2 movementInput;
     private Rigidbody playerRb;
+
+    public ParticleSystem lightningDebuffParticle;
     
     
 
@@ -24,18 +31,25 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         isFalling(playerRb);
-
-        // move player if axis information responds
-        if (!isStunned)
+        if (isStunned)
         {
+            lightningDebuffParticle.gameObject.SetActive(true);
+        } 
+        else if (!isStunned)
+        {
+            lightningDebuffParticle.gameObject.SetActive(false);
             transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
         }
+
+        
+        animateCharacter(playerRb);
 
     }
 
@@ -71,6 +85,16 @@ public class PlayerController : MonoBehaviour
         if (falling)
         {
             addExtraGavity();
+        }
+    }
+
+
+    public void animateCharacter(Rigidbody rigidbody)
+    {
+        if (transform.TransformDirection(rigidbody.velocity).z > walkingThreshold)
+        {
+            animator.SetBool("isWalkingForward", true);
+
         }
     }
 

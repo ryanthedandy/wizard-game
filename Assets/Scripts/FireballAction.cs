@@ -11,7 +11,9 @@ public class FireballAction : MonoBehaviour
     public Transform firePoint;
     
     public Rigidbody projectilePrefab;
-    
+
+    public ParticleSystem smokeParticle;
+
     Controls controls;
     
     private float launchForce = 1300f;
@@ -41,6 +43,7 @@ public class FireballAction : MonoBehaviour
                 firePoint.position,
                 firePoint.rotation);
 
+            smokeParticle.gameObject.SetActive(true);
             projectileInstance.AddForce(firePoint.forward * launchForce, ForceMode.Impulse);
 
             canShoot = false;
@@ -51,6 +54,7 @@ public class FireballAction : MonoBehaviour
     IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(2);
+        smokeParticle.gameObject.SetActive(false);
         canShoot = true;
     }
 

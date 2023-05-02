@@ -6,6 +6,7 @@ public class FireballInteraction : MonoBehaviour
 {
     public float knockBack = 50;
     public bool isRebounding = false;
+    
     // Start is called before the first frame update
     void Start()
     {
