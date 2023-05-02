@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     //animation bools
     public Animator animator;
-    public float walkingThreshold = .1f;
+    public Vector2 inputVector;
 
 
 
@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        inputVector.x = Input.GetAxis("Horizontal"); 
+        inputVector.y = Input.GetAxis("Vertical");
+
         isFalling(playerRb);
         if (isStunned)
         {
@@ -91,11 +94,9 @@ public class PlayerController : MonoBehaviour
 
     public void animateCharacter(Rigidbody rigidbody)
     {
-        if (transform.TransformDirection(rigidbody.velocity).z > walkingThreshold)
-        {
-            animator.SetBool("isWalkingForward", true);
+        animator.SetFloat("horizontal", Input.GetAxis("Horizontal"));
+        animator.SetFloat("vertical", Input.GetAxis("Vertical"));
 
-        }
     }
 
 
