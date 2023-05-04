@@ -12,7 +12,11 @@ public class FireballAction : MonoBehaviour
     
     public Rigidbody projectilePrefab;
 
-    public ParticleSystem smokeParticle;
+    
+
+    public Animator animator;
+
+    public GameObject smokePrefab;
 
     Controls controls;
     
@@ -25,6 +29,7 @@ public class FireballAction : MonoBehaviour
     
     public void Awake()
     {
+        animator = GetComponent<Animator>();
         controls = new Controls();
         controls.Gameplay.Shoot.performed += ctx => OnShoot();
     }
@@ -38,13 +43,14 @@ public class FireballAction : MonoBehaviour
 
         if (canShoot)
         {
-            var projectileInstance = Instantiate(
-                projectilePrefab,
-                firePoint.position,
-                firePoint.rotation);
+            
 
-            smokeParticle.gameObject.SetActive(true);
-            projectileInstance.AddForce(firePoint.forward * launchForce, ForceMode.Impulse);
+            
+            animator.SetTrigger("castFire");
+            StartCoroutine(AnimationDelay());
+
+
+
 
             canShoot = false;
             StartCoroutine(Cooldown());
@@ -54,11 +60,29 @@ public class FireballAction : MonoBehaviour
     IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(2);
-        smokeParticle.gameObject.SetActive(false);
+        
+        
         canShoot = true;
     }
 
-    
+    IEnumerator AnimationDelay()
+    {
+        yield return new WaitForSeconds(.4f);
+        FindObjectOfType<AudioManager>().Play("fireball");
+
+        var projectileInstance = Instantiate(
+                projectilePrefab,
+                firePoint.position,
+                firePoint.rotation);
+
+        var smokeInstance = Instantiate(
+                smokePrefab,
+                firePoint.position,
+                firePoint.rotation);
+
+        projectileInstance.AddForce(firePoint.forward * launchForce, ForceMode.Impulse);
+
+    }
 
 
 

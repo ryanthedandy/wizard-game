@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class FireballInteraction : MonoBehaviour
 {
-    public float knockBack = 50;
+    public float knockBack = 10;
     public bool isRebounding = false;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -26,15 +27,20 @@ public class FireballInteraction : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             
+
             Rigidbody projectileRb = other.gameObject.GetComponent<Rigidbody>();
 
             if (!isRebounding)
             {
                 projectileRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
+                FindObjectOfType<AudioManager>().Play("hit");
+                Destroy(gameObject);
             }
             else
             {
                 projectileRb.AddForce(-transform.forward * knockBack, ForceMode.Impulse);
+                FindObjectOfType<AudioManager>().Play("hit");
+                Destroy(gameObject);
             }
 
         }
@@ -42,6 +48,8 @@ public class FireballInteraction : MonoBehaviour
         if (other.gameObject.tag == "Shield")
         {
             isRebounding = true;
+            FindObjectOfType<AudioManager>().Play("hit");
+            
         }
     }
 

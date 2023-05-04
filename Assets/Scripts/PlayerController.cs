@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,14 +15,24 @@ public class PlayerController : MonoBehaviour
 
     //animation bools
     public Animator animator;
-    public Vector2 inputVector;
-
-
 
     private Vector2 movementInput;
     private Rigidbody playerRb;
 
     public ParticleSystem lightningDebuffParticle;
+    public ParticleSystem spawnParticle;
+
+    public PlayerDetails playerDetails;
+
+    Controls controls;
+
+    public bool spawning = true;
+
+    public AudioSource footstep;
+
+
+
+
     
     
 
@@ -30,18 +41,26 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        controls = new Controls();
         playerRb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        playerDetails = GetComponent<PlayerDetails>();
+        footstep = GetComponent<AudioSource>();
+        
+
+        StartCoroutine(SpawnAnimation());
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        inputVector.x = Input.GetAxis("Horizontal"); 
-        inputVector.y = Input.GetAxis("Vertical");
+        
 
         isFalling(playerRb);
-        if (isStunned)
+        
+        if (isStunned && !spawning)
         {
             lightningDebuffParticle.gameObject.SetActive(true);
         } 
@@ -49,6 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             lightningDebuffParticle.gameObject.SetActive(false);
             transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
+            
         }
 
         
@@ -59,12 +79,20 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext ctx)
     {
         movementInput = ctx.ReadValue<Vector2>();
+
+        footstep.enabled = true;
+
+        if (ctx.canceled)
+        {
+            footstep.enabled = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Death Zone"))
         {
+            FindObjectOfType<AudioManager>().Play("die");
             Destroy(gameObject);
         }
     }
@@ -83,21 +111,37 @@ public class PlayerController : MonoBehaviour
         else
         {
             falling = false;
+            
         }
 
         if (falling)
         {
             addExtraGavity();
+            
         }
     }
 
 
     public void animateCharacter(Rigidbody rigidbody)
     {
-        animator.SetFloat("horizontal", Input.GetAxis("Horizontal"));
-        animator.SetFloat("vertical", Input.GetAxis("Vertical"));
-
+        
+            animator.SetFloat("horizontal", -movementInput.x);
+            animator.SetFloat("vertical", -movementInput.y);
+        
     }
+
+    IEnumerator SpawnAnimation()
+    {
+        isStunned = true;
+        spawnParticle.gameObject.SetActive(true);
+        FindObjectOfType<AudioManager>().Play("spawn");
+        yield return new WaitForSeconds(2.9f);
+        isStunned = false;
+        spawning = false;
+        spawnParticle.gameObject.SetActive(false);
+    }
+
+  
 
 
 

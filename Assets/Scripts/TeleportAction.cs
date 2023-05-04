@@ -8,12 +8,14 @@ public class TeleportAction : MonoBehaviour
     //Controls controls;
    // Rigidbody playerRb;
     bool canTele = true;
-    bool held = false;
-    public float teleDistance = 0;
+    
+    public float teleDistance = 5.0f;
     public ParticleSystem teleportParticle;
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         //controls = new Controls();
         //playerRb = GetComponent<Rigidbody>();
     }
@@ -21,27 +23,23 @@ public class TeleportAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (held)
-        {
-            if (teleDistance < 5.0f)
-            {
-                teleDistance += 5.0f;
-            }
-        }
+        
  
     }
 
     
-    public void Teleport()
+    /*public void Teleport()
     {
         if (canTele)
         {
             teleportParticle.gameObject.SetActive(true);
             transform.position += transform.forward * teleDistance;
+            animator.SetTrigger("castTele");
             teleDistance = 0;
             StartCoroutine(Cooldown());
         }
     }
+    */
 
     IEnumerator Cooldown()
     {
@@ -56,18 +54,28 @@ public class TeleportAction : MonoBehaviour
 
     public void OnTeleport(CallbackContext ctx)
     {
+
         if (canTele)
         {
-            if (ctx.performed)
-                held = true;
+            animator.SetTrigger("castTele");
+            StartCoroutine(TeleDelay());
             
-            if (ctx.canceled)
-            {
-                held = false;
-                Teleport();
-            }
+           
+            
+            StartCoroutine(Cooldown());
         }
+
+
     }
+
+    IEnumerator TeleDelay()
+    {
+        yield return new WaitForSeconds(.55f);
+        teleportParticle.gameObject.SetActive(true);
+        transform.position += transform.forward * teleDistance;
+        FindObjectOfType<AudioManager>().Play("tele");
+    }
+
 
 
 }

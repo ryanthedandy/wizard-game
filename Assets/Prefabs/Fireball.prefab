@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7930991176968597605}
   - component: {fileID: -2134172727755177120}
   - component: {fileID: 7507398858358334208}
+  - component: {fileID: 3261636089401685022}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Projectile
@@ -30,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7930991176968597613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.88, y: 18.74, z: 1.77}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: 4.8531, y: 18.74, z: 1.77}
+  m_LocalScale: {x: 1.0027, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4936597207222833487}
@@ -67,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a4aa39205d4684799b1966aceba84c80, type: 2}
+  - {fileID: 2100000, guid: 522f3e386f2b5244dafd0d429ec708e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,10 +116,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: a3d4a55d3c64ce94caeea894921e4f60, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.8009055
+  m_Height: 1.7862225
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.035107, y: 0.06404972, z: 0}
 --- !u!114 &-2134172727755177120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,8 +145,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dffc91591951a054cb44c6ea1285acd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockBack: 250
+  knockBack: 180
   isRebounding: 0
+--- !u!114 &3261636089401685022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7930991176968597613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d28cb150ad86f4a8100312a4aea7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uvAnimationRate: {x: 1, y: 0}
+  textureName: _MainTex
 --- !u!1001 &3403627015012178481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -260,6 +275,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.8281617
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.8281617
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.8281617
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.027
       objectReference: {fileID: 0}
@@ -297,6 +324,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 6836f5eaa96f845c4ac0909f84272556, type: 3}
+      propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

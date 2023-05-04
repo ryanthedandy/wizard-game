@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerDetails : MonoBehaviour
 {
@@ -11,4 +12,6 @@ public class PlayerDetails : MonoBehaviour
     {
         transform.position = startPos;
     }
+
+   
 }

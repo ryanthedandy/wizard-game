@@ -35,6 +35,15 @@ public class PlayerManager : MonoBehaviour
 
         // remove chance of double spawn
         spawnIndexList.Remove(spawnIndex);
+
+        if (spawnLocations[spawnIndex] == null)
+        {
+            spawnIndexList.Add(0);
+            spawnIndexList.Add(1);
+            spawnIndexList.Add(2);
+            spawnIndexList.Add(3);
+
+        }
     }
 
 

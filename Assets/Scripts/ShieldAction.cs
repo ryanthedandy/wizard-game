@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ShieldAction : MonoBehaviour
 {
     Controls controls;
     public GameObject shieldPrefab;
     public Transform firePoint;
     private bool canShield = true;
+    public Animator animator;
     
 
     void Awake()
     {
+        animator = GetComponent<Animator>();
         controls = new Controls();
         controls.Gameplay.Shield.performed += ctx => OnShield();
     }
@@ -26,11 +29,9 @@ public class ShieldAction : MonoBehaviour
     {
         if (canShield)
         {
-            var projectileInstance = Instantiate(
-                shieldPrefab,
-                firePoint.position,
-                firePoint.rotation);
-
+            
+            animator.SetTrigger("castShield");
+            StartCoroutine(AnimationDelay());
             canShield = false;
             StartCoroutine(Cooldown());
         }
@@ -42,5 +43,16 @@ public class ShieldAction : MonoBehaviour
         canShield = true;
     }
 
- 
+    IEnumerator AnimationDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        Instantiate(
+                shieldPrefab,
+                firePoint.position,
+                firePoint.rotation);
+        FindObjectOfType<AudioManager>().Play("shield");
+
+    }
+
+
 }

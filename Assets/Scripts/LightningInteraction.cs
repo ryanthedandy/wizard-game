@@ -6,14 +6,27 @@ public class LightningInteraction : MonoBehaviour
 {
 
     public List<PlayerController> playerScripts = new List<PlayerController>();
+    private float counter;
+    //private float duration = 20.0f;
+    public ParticleSystem lightningParticles;
+    Vector3 startSize = new Vector3(.5f,.5f,.5f);
+    Vector3 endSize = new Vector3(3, 3, 3);
     void Awake()
     {
+        
         StartCoroutine(destroyLightning());
+        
+
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+        counter += Time.deltaTime;
+        transform.localScale = Vector3.Lerp(startSize, endSize, counter);
+       
+        
         
     }
 
@@ -21,10 +34,12 @@ public class LightningInteraction : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("It hits");
+            FindObjectOfType<AudioManager>().Play("stunned");
+
             playerScripts.Add(other.gameObject.GetComponent<PlayerController>());
             foreach(PlayerController script in playerScripts)
             {
+                
                 script.isStunned = true;
             }
             
@@ -44,9 +59,6 @@ public class LightningInteraction : MonoBehaviour
     }
 
     
-
-
-
 
 
 
