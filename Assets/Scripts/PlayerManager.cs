@@ -29,21 +29,17 @@ public class PlayerManager : MonoBehaviour
         playerInput.gameObject.GetComponent<PlayerDetails>().playerID = playerInput.playerIndex + 1;
 
         int spawnIndex = spawnIndexList[Random.Range(0, 3)];
+        Debug.Log(spawnIndex);
 
-        // Set the start spawn position of the player using the location at the associated element into the array.
-        playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[spawnIndex].position;
-
-        // remove chance of double spawn
-        spawnIndexList.Remove(spawnIndex);
-
-        if (spawnLocations[spawnIndex] == null)
+        if (spawnIndexList.Contains(spawnIndex))
         {
-            spawnIndexList.Add(0);
-            spawnIndexList.Add(1);
-            spawnIndexList.Add(2);
-            spawnIndexList.Add(3);
-
+            playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[spawnIndex].position;
         }
+        else
+        {
+            spawnIndexList.Add(spawnIndex);
+        }
+            
     }
 
 
