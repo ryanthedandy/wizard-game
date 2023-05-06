@@ -1379,37 +1379,37 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: shield
     clip: {fileID: 8300000, guid: b56b588d93cfc6d4981a01d406bc7966, type: 3}
-    volume: 0.187
+    volume: 0.304
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
   - name: fireball
     clip: {fileID: 8300000, guid: 6b2f5e232b0be01449b826110c3ad7ec, type: 3}
-    volume: 0.036
+    volume: 0.315
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
   - name: tele
     clip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
-    volume: 0.124
+    volume: 0.214
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
   - name: lightning
     clip: {fileID: 8300000, guid: 9c13496f2c74332419e92a13e0bb554d, type: 3}
-    volume: 0.034
+    volume: 0.313
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
   - name: stunned
     clip: {fileID: 8300000, guid: 8f63a99abbeabc3498994cc053fcdcd2, type: 3}
-    volume: 0.045
+    volume: 0.324
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
   - name: spawn
     clip: {fileID: 8300000, guid: c607ba9107b85a54dac2d09b78af0654, type: 3}
-    volume: 0.045
+    volume: 0.306
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
@@ -1421,7 +1421,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: die
     clip: {fileID: 8300000, guid: 21c4a490b24ba2045bc815f7626a40ef, type: 3}
-    volume: 0.115
+    volume: 0.304
     pitch: 0.68
     loop: 0
     source: {fileID: 0}
