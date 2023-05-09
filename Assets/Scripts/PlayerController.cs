@@ -6,7 +6,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public bool gameOver = false;
     public float playerSpeed = 5;
     public bool isStunned = false;
     public bool falling;
@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         playerDetails = GetComponent<PlayerDetails>();
         footstep = GetComponent<AudioSource>();
+        gameOver = false;
         
 
         StartCoroutine(SpawnAnimation());
@@ -56,23 +57,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!gameOver)
+        {
 
-        isFalling(playerRb);
-        
-        if (isStunned && !spawning)
-        {
-            lightningDebuffParticle.gameObject.SetActive(true);
-        } 
-        else if (!isStunned)
-        {
-            lightningDebuffParticle.gameObject.SetActive(false);
-            transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
-            
+
+            isFalling(playerRb);
+
+            if (isStunned && !spawning)
+            {
+                lightningDebuffParticle.gameObject.SetActive(true);
+            }
+            else if (!isStunned)
+            {
+                lightningDebuffParticle.gameObject.SetActive(false);
+                transform.Translate(new Vector3(-movementInput.x, 0, -movementInput.y) * playerSpeed * Time.deltaTime, Space.World);
+
+            }
+
+
+            animateCharacter(playerRb);
         }
-
-        
-        animateCharacter(playerRb);
 
     }
 
@@ -85,15 +89,6 @@ public class PlayerController : MonoBehaviour
         if (ctx.canceled)
         {
             footstep.enabled = false;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Death Zone"))
-        {
-            FindObjectOfType<AudioManager>().Play("die");
-            Destroy(gameObject);
         }
     }
 

@@ -3,44 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.InputSystem;
-    
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
+    public int totalPlayers = 0;
+    public int defaultLives = 3;
     public Transform[] spawnLocations;
+    public Dictionary<int, int> playerLives = new Dictionary<int, int>();
+    public PlayerController playerController;
+    public TextMeshProUGUI gameOverMenu;
 
-    // use this list to make spawn locations random, and prevent double spawn
-    List<int> spawnIndexList = new List<int>()
+    private void Start()
     {
-        0,
-        1,
-        2,
-        3,
-    };
-    
-    
-
-
+       
+    }
 
     public void OnPlayerJoin(PlayerInput playerInput)
     {
-        Debug.Log(playerInput.playerIndex);
+        
         // Set the player ID, add one to the index to start at Player 1
-        playerInput.gameObject.GetComponent<PlayerDetails>().playerID = playerInput.playerIndex + 1;
-
-        int spawnIndex = spawnIndexList[Random.Range(0, 3)];
-        Debug.Log(spawnIndex);
-
-        if (spawnIndexList.Contains(spawnIndex))
-        {
-            playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[spawnIndex].position;
-        }
-        else
-        {
-            spawnIndexList.Add(spawnIndex);
-        }
-            
+        playerInput.gameObject.GetComponent<PlayerDetails>().playerID = playerInput.playerIndex + 1;     
+        playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[Random.Range(0,4)].position;
+        playerLives.Add(playerInput.playerIndex + 1, defaultLives);
+        totalPlayers += 1;
+           
     }
+
+    public void checkPlayersLeft(Dictionary<int,int> players)
+    {
+        if (players.Count <= 1)
+        {
+            Debug.Log("ENTERS STATEMENT");
+            GameObject.Find("Player(Clone)").GetComponent<PlayerController>().gameOver = true;
+            gameOverMenu.text = "Player " + GameObject.Find("Player(Clone)").GetComponent<PlayerDetails>().playerID + " WINS";
+            GameObject.Find("Player(Clone)").GetComponent<PlayerController>().footstep.enabled = false;
+            gameOverMenu.gameObject.SetActive(true);
+            StartCoroutine(gameIsOver());
+        }   
+       
+    }
+
+    IEnumerator gameIsOver()
+    {
+        yield return new WaitForSeconds(5);
+        gameOverMenu.gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+
+    }
+
+    
 
 
 
