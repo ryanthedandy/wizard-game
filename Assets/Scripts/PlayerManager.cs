@@ -8,11 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
-    public int totalPlayers = 0;
+    
     public int defaultLives = 3;
+    public int maxRange = 4;
     public Transform[] spawnLocations;
     public Dictionary<int, int> playerLives = new Dictionary<int, int>();
-    public PlayerController playerController;
+    List<int> numberList = new List<int>() { 0, 1, 2, 3};
+    public TextMeshProUGUI startText;
+
     public TextMeshProUGUI gameOverMenu;
 
     private void Start()
@@ -22,22 +25,27 @@ public class PlayerManager : MonoBehaviour
 
     public void OnPlayerJoin(PlayerInput playerInput)
     {
+        int iD = playerInput.playerIndex + 1;
+        int index = numberList[Random.Range(0, maxRange)];
+        playerInput.gameObject.GetComponent<PlayerDetails>().playerID = iD;    
+        playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[index].position;
+        playerLives.Add(iD, defaultLives);
+        numberList.Remove(index);
+        maxRange -= 1;
+        startText.gameObject.SetActive(false);
         
-        // Set the player ID, add one to the index to start at Player 1
-        playerInput.gameObject.GetComponent<PlayerDetails>().playerID = playerInput.playerIndex + 1;     
-        playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[Random.Range(0,4)].position;
-        playerLives.Add(playerInput.playerIndex + 1, defaultLives);
-        totalPlayers += 1;
+        
            
     }
 
     public void checkPlayersLeft(Dictionary<int,int> players)
     {
-        if (players.Count <= 1)
+        if (players.Count == 1)
         {
-            Debug.Log("ENTERS STATEMENT");
+            List<int> keyList = new List<int>(players.Keys);
             GameObject.Find("Player(Clone)").GetComponent<PlayerController>().gameOver = true;
-            gameOverMenu.text = "Player " + GameObject.Find("Player(Clone)").GetComponent<PlayerDetails>().playerID + " WINS";
+            GameObject.FindAnyObjectByType<PlayerController>().GetComponent<PlayerController>().gameOver = true;
+            gameOverMenu.text = "Player " + keyList[0] + " WINS";
             GameObject.Find("Player(Clone)").GetComponent<PlayerController>().footstep.enabled = false;
             gameOverMenu.gameObject.SetActive(true);
             StartCoroutine(gameIsOver());
@@ -51,6 +59,11 @@ public class PlayerManager : MonoBehaviour
         gameOverMenu.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
+    }
+
+    public void RemoveLife(int iD)
+    {
+        playerLives[iD] -= 1;
     }
 
     

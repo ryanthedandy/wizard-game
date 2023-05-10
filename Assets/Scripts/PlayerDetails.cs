@@ -8,7 +8,6 @@ public class PlayerDetails : MonoBehaviour
     
     public int playerID;
     public Vector3 startPos;
-    public int lives = 3;
     public PlayerManager playerManager;
     public PlayerController playerController;
     // Start is called before the first frame update
@@ -23,18 +22,23 @@ public class PlayerDetails : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Death Zone"))
         {
-            if (playerManager.playerLives[playerID] < 0)
-            { 
-                Debug.Log("player " + playerID);
+            if (playerManager.playerLives[playerID] <= 0)
+            {              
+
                 playerManager.playerLives.Remove(playerID);
+                Debug.Log(playerManager.playerLives.Count);
                 Destroy(gameObject);
                 playerManager.checkPlayersLeft(playerManager.playerLives);
-                
 
             }
-            FindObjectOfType<AudioManager>().Play("die");
-            transform.position = startPos;
-            playerManager.playerLives[playerID] -= 1;
+            else if (playerManager.playerLives[playerID] > 0)
+            {
+                FindObjectOfType<AudioManager>().Play("die");
+                transform.position = startPos;
+                playerManager.RemoveLife(playerID);
+            }
+            
+            
 
         }
     }
