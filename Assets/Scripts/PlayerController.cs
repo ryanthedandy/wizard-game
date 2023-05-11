@@ -6,7 +6,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool gameOver = false;
+    
     public float playerSpeed = 5;
     public bool isStunned = false;
     public bool falling;
@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
 
     public AudioSource footstep;
 
+    public PlayerManager playerManager;
+
 
 
 
@@ -46,7 +48,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         playerDetails = GetComponent<PlayerDetails>();
         footstep = GetComponent<AudioSource>();
-        gameOver = false;
+        playerManager = GameObject.Find("Player Manger").GetComponent<PlayerManager>();
+        
         
 
         StartCoroutine(SpawnAnimation());
@@ -57,7 +60,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameOver)
+        if (!playerManager.gameOver)
         {
 
 

@@ -7,35 +7,20 @@ using UnityEngine.InputSystem;
 
 public class FireballAction : MonoBehaviour
 {
-    
+
     public Transform firePoint;
-    
     public Rigidbody projectilePrefab;
-
-    
-
     public Animator animator;
-
     public GameObject smokePrefab;
-
     Controls controls;
-    
-    private float launchForce = 1300f;
+    private float launchForce = 1500f;
     private bool canShoot = true;
-    
-    
 
-
-    
     public void Awake()
     {
         animator = GetComponent<Animator>();
         controls = new Controls();
         controls.Gameplay.Shoot.performed += ctx => OnShoot();
-    }
-    public void Update()
-    {
-        
     }
 
     public void OnShoot()
@@ -43,15 +28,8 @@ public class FireballAction : MonoBehaviour
 
         if (canShoot)
         {
-            
-
-            
             animator.SetTrigger("castFire");
             StartCoroutine(AnimationDelay());
-
-
-
-
             canShoot = false;
             StartCoroutine(Cooldown());
         }
@@ -60,8 +38,6 @@ public class FireballAction : MonoBehaviour
     IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(2);
-        
-        
         canShoot = true;
     }
 

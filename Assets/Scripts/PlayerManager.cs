@@ -11,7 +11,9 @@ public class PlayerManager : MonoBehaviour
     
     public int defaultLives = 3;
     public int maxRange = 4;
+    public bool gameOver = false;
     public Transform[] spawnLocations;
+    public Transform gameOverSpawn;
     public Dictionary<int, int> playerLives = new Dictionary<int, int>();
     List<int> numberList = new List<int>() { 0, 1, 2, 3};
     public TextMeshProUGUI startText;
@@ -25,14 +27,21 @@ public class PlayerManager : MonoBehaviour
 
     public void OnPlayerJoin(PlayerInput playerInput)
     {
-        int iD = playerInput.playerIndex + 1;
-        int index = numberList[Random.Range(0, maxRange)];
-        playerInput.gameObject.GetComponent<PlayerDetails>().playerID = iD;    
-        playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[index].position;
-        playerLives.Add(iD, defaultLives);
-        numberList.Remove(index);
-        maxRange -= 1;
-        startText.gameObject.SetActive(false);
+        if (!gameOver)
+        {
+            int iD = playerInput.playerIndex + 1;
+            int index = numberList[Random.Range(0, maxRange)];
+            playerInput.gameObject.GetComponent<PlayerDetails>().playerID = iD;
+            playerInput.gameObject.GetComponent<PlayerDetails>().startPos = spawnLocations[index].position;
+            playerLives.Add(iD, defaultLives);
+            numberList.Remove(index);
+            maxRange -= 1;
+            startText.gameObject.SetActive(false);
+        }
+        else if (gameOver)
+        {
+            playerInput.gameObject.GetComponent<PlayerDetails>().startPos = gameOverSpawn.position;
+        }
         
         
            
@@ -43,8 +52,7 @@ public class PlayerManager : MonoBehaviour
         if (players.Count == 1)
         {
             List<int> keyList = new List<int>(players.Keys);
-            GameObject.Find("Player(Clone)").GetComponent<PlayerController>().gameOver = true;
-            GameObject.FindAnyObjectByType<PlayerController>().GetComponent<PlayerController>().gameOver = true;
+            gameOver = true;
             gameOverMenu.text = "Player " + keyList[0] + " WINS";
             GameObject.Find("Player(Clone)").GetComponent<PlayerController>().footstep.enabled = false;
             gameOverMenu.gameObject.SetActive(true);
@@ -58,6 +66,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         gameOverMenu.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+
 
     }
 
