@@ -1,59 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class FireballInteraction : MonoBehaviour
 {
     public float knockBack = 10;
     public bool isRebounding = false;
-    
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            
-
-            Rigidbody projectileRb = other.gameObject.GetComponent<Rigidbody>();
-
+            Rigidbody playerRb = other.gameObject.GetComponent<Rigidbody>();
             if (!isRebounding)
             {
-                projectileRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
+                playerRb.AddForce(transform.forward * knockBack, ForceMode.Impulse);
                 FindObjectOfType<AudioManager>().Play("hit");
                 Destroy(gameObject);
             }
             else
             {
-                projectileRb.AddForce(-transform.forward * knockBack, ForceMode.Impulse);
+                // if fireball is a rebounder, it changes how force is applied so that player gets sent in correct direction
+                playerRb.AddForce(-transform.forward * knockBack, ForceMode.Impulse);
                 FindObjectOfType<AudioManager>().Play("hit");
                 Destroy(gameObject);
             }
-
         }
-
         if (other.gameObject.tag == "Shield")
         {
+            // if fireball hits a shield, it is set as a rebounding shot so that it can correctly apply force to player
             isRebounding = true;
-            FindObjectOfType<AudioManager>().Play("hit");
-            
+            FindObjectOfType<AudioManager>().Play("hit");       
         }
     }
-
-
-
-
 }

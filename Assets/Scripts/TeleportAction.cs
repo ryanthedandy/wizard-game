@@ -1,81 +1,46 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
 public class TeleportAction : MonoBehaviour
-{
-    //Controls controls;
-   // Rigidbody playerRb;
-    bool canTele = true;
-    
-    public float teleDistance = 5.0f;
+{  
     public ParticleSystem teleportParticle;
     public Animator animator;
-    // Start is called before the first frame update
+
+    bool canTele = true;
+    public float teleDistance = 5.0f;
+
     void Start()
     {
-        animator = GetComponent<Animator>();
-        //controls = new Controls();
-        //playerRb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();     
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
- 
-    }
-
-    
-    /*public void Teleport()
-    {
-        if (canTele)
-        {
-            teleportParticle.gameObject.SetActive(true);
-            transform.position += transform.forward * teleDistance;
-            animator.SetTrigger("castTele");
-            teleDistance = 0;
-            StartCoroutine(Cooldown());
-        }
-    }
-    */
 
     IEnumerator Cooldown()
-    {
-        
+    {   
+        // tele, then make player wait for cooldown to come back up
         canTele = false;
         yield return new WaitForSeconds(1);
         teleportParticle.gameObject.SetActive(false);
-        canTele = true;
-        
-        
+        canTele = true;        
     }
-
     public void OnTeleport(CallbackContext ctx)
     {
-
         if (canTele)
         {
+            // start animation, then add coroutine to sync the animation movement and ability
             animator.SetTrigger("castTele");
-            StartCoroutine(TeleDelay());
-            
-           
-            
+            StartCoroutine(TeleDelay());          
             StartCoroutine(Cooldown());
         }
-
-
     }
 
     IEnumerator TeleDelay()
     {
+        // delay ability to sync with animation, create particle effect, then play sound
         yield return new WaitForSeconds(.55f);
         teleportParticle.gameObject.SetActive(true);
         transform.position += transform.forward * teleDistance;
         FindObjectOfType<AudioManager>().Play("tele");
     }
-
-
 
 }

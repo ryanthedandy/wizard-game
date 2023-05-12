@@ -1,17 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class ShieldAction : MonoBehaviour
 {
+    // prefabs, controls, firepoints and animations
     Controls controls;
     public GameObject shieldPrefab;
     public Transform firePoint;
-    private bool canShield = true;
     public Animator animator;
-    
 
+    // cooldown variable
+    private bool canShield = true;
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -19,17 +18,11 @@ public class ShieldAction : MonoBehaviour
         controls.Gameplay.Shield.performed += ctx => OnShield();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnShield()
     {
         if (canShield)
-        {
-            
+        {   
+            // if able to shield, start animation, then delay shield cast to sync it with animation
             animator.SetTrigger("castShield");
             StartCoroutine(AnimationDelay());
             canShield = false;
@@ -39,20 +32,19 @@ public class ShieldAction : MonoBehaviour
 
     IEnumerator Cooldown()
     {
+        // cooldown function
         yield return new WaitForSeconds(2);
         canShield = true;
     }
 
     IEnumerator AnimationDelay()
     {
+        // delay shield cast to sync with animation, then instantiate shield and play sound
         yield return new WaitForSeconds(.5f);
         Instantiate(
                 shieldPrefab,
                 firePoint.position,
                 firePoint.rotation);
         FindObjectOfType<AudioManager>().Play("shield");
-
     }
-
-
 }
