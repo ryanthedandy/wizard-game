@@ -1,4 +1,4 @@
 # wizard-game
-Isometric wizard game I am working on
+Isometric wizard game, first unity project
 
-ITS sick
+Finished 5/13/23
